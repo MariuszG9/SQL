@@ -1,0 +1,26 @@
+CREATE PROCEDURE goWithUpdateSalValue @vend_id nvarchar(6)
+AS
+
+WITH
+new_update AS 
+(
+   SELECT 
+      sCTE.inv_numb,
+      sCTE.qty,
+      sCTE.vendor_id,
+      sCTE.salvalue
+   FROM sales_cte sCTE
+   WHERE sCTE.vendor_id = @vend_id 
+)
+INSERT INTO sales_cte
+   (inv_numb, inv_date, vendor_id,qty, salvalue)
+SELECT
+   vnd.inv_numb,
+   GETDATE(),
+   @vend_id,
+   vnd.qty,
+   (vnd.salvalue * 1.1 ) AS salval
+FROM new_update vnd
+
+
+EXEC goWithUpdateSalValue @vend_id='256562'
