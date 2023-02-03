@@ -14,7 +14,7 @@ INSERT INTO sales_cte
 SELECT
    vnd.inv_numb,
    GETDATE(),
-   '256562’,
+   '256562',
    vnd.qty,
    (vnd.salvalue * 1.1 )
 FROM new_update vnd
