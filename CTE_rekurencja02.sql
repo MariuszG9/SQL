@@ -1,4 +1,4 @@
-WITH Ancestor(empID) AS 
+WITH empoCTE(empID) AS 
 (
 	SELECT empID
 	FROM employees
@@ -14,9 +14,9 @@ WITH Ancestor(empID) AS
 
 	SELECT rf.supervisor
 	FROM employees rf
-	INNER JOIN Ancestor a ON rf.empID = a.empID
+	INNER JOIN empoCTE a ON rf.empID = a.empID
 )
 SELECT DISTINCT rf.empID, CONCAT(rf.forename,' ',rf.surname) AS name, rf.supervisor, rf.organizational_lvl
 FROM employees rf
-INNER JOIN Ancestor a ON rf.empID = a.empID
+INNER JOIN empoCTE a ON rf.empID = a.empID
 ORDER BY rf.empID DESC
