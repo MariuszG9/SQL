@@ -1,0 +1,2 @@
+ALTER TABLE dbo.product
+ALTER COLUMN type_sx1 VARCHAR(15);
