@@ -1,0 +1,111 @@
+-- Tabela w 0NF
+CREATE TABLE Employees0NF (
+    EmployeeID INT PRIMARY KEY,
+    EmployeeData NVARCHAR(150)
+);
+
+-- Wstawiamy dane do tabeli dla 0NF
+INSERT INTO Employees0NF VALUES
+(1, 'Adam Kowalski adam.kowalski@example.com IT 60000.00'),
+(2, 'Anna Nowak anna.nowak@example.com HR 55000.00'),
+(3, 'Piotr Dąbrowski piotr.dabrowski@example.com Finance 70000.00');
+
+-- Wybieramy dane z poziomu 0
+SELECT * FROM Employees0NF;
+
+-- Tworzymy tabelę dla 1NF
+CREATE TABLE Employees1NF (
+    EmployeeID INT PRIMARY KEY,
+    FirstName NVARCHAR(50),
+    LastName NVARCHAR(50),
+    Email NVARCHAR(100),
+    Department NVARCHAR(50),
+    Salary DECIMAL(10, 2)
+);
+
+-- Wstawiamy dane do tabeli dla 1NF
+INSERT INTO Employees1NF VALUES
+(1, 'Adam', 'Kowalski', 'adam.kowalski@example.com', 'IT', 60000.00),
+(2, 'Anna', 'Nowak', 'anna.nowak@example.com', 'HR', 55000.00),
+(3, 'Piotr', 'Dąbrowski', 'piotr.dabrowski@example.com', 'Finance', 70000.00);
+
+-- Wybieramy dane z poziomu 1
+SELECT * FROM Employees1NF;
+
+-- Tworzymy tabelę dla 2NF
+CREATE TABLE Employees2NF (
+    BK#EmployeeID INT PRIMARY KEY IDENTITY(1,1),
+    FirstName NVARCHAR(50),
+    LastName NVARCHAR(50),
+    Email NVARCHAR(100),
+    Salary DECIMAL(10, 2),
+    FBK#DepartmentID INT UNIQUE
+);
+
+CREATE TABLE Departments (
+    BK#DepartmentID INT PRIMARY KEY IDENTITY(1,1),
+    EmployeeID INT FOREIGN KEY REFERENCES Employees2NF(FBK#DepartmentID),
+    DepartmentName NVARCHAR(50),
+    DepratmentSUID NVARCHAR(10)
+);
+
+-- Wstawiamy dane do tabeli dla 2NF
+INSERT INTO Employees2NF (FirstName, LastName, Email, Salary, FBK#DepartmentID) VALUES
+('Adam', 'Kowalski', 'adam.kowalski@example.com', 60000.00, 1),
+('Anna', 'Nowak', 'anna.nowak@example.com', 55000.00, 2),
+('Piotr', 'Dąbrowski', 'piotr.dabrowski@example.com', 70000.00, 3);
+
+-- Wstawiamy dane do tabeli Departments
+INSERT INTO Departments (EmployeeID, DepartmentName, DepratmentSUID) VALUES
+(1, 'IT', 'KR50050511'),
+(2, 'HR', 'ZT1050502'),
+(3, 'Finance', 'AN33050544');
+
+-- Wybieramy dane z poziomu 2
+SELECT * FROM Employees2NF;
+
+-- Tworzymy tabelę dla 2NF
+CREATE TABLE Employees2NF (
+    BK#EmployeeID INT PRIMARY KEY IDENTITY(1,1),
+    FirstName NVARCHAR(50),
+    LastName NVARCHAR(50),
+    Email NVARCHAR(100),
+    Salary DECIMAL(10, 2),
+    FBK#DepartmentID INT UNIQUE
+);
+
+-- Tworzymy tabelę dla 3NF - informacje o departamentach
+CREATE TABLE DepartmentsInfo (
+    FBK#DepartmentID INT PRIMARY KEY,
+    DepartmentName NVARCHAR(50),
+    DepratmentSUID NVARCHAR(10)
+);
+
+-- Tworzymy tabelę dla 3NF - powiązanie pracowników z departamentami
+CREATE TABLE EmployeeDepartments (
+    BK#EmployeeID INT PRIMARY KEY,
+    FBK#DepartmentID INT,
+    FOREIGN KEY (BK#EmployeeID) REFERENCES Employees2NF(BK#EmployeeID),
+    FOREIGN KEY (FBK#DepartmentID) REFERENCES DepartmentsInfo(FBK#DepartmentID)
+);
+
+-- Wstawiamy dane do tabeli dla 2NF
+INSERT INTO Employees2NF (FirstName, LastName, Email, Salary, FBK#DepartmentID) VALUES
+('Adam', 'Kowalski', 'adam.kowalski@example.com', 60000.00, 1),
+('Anna', 'Nowak', 'anna.nowak@example.com', 55000.00, 2),
+('Piotr', 'Dąbrowski', 'piotr.dabrowski@example.com', 70000.00, 3);
+
+-- Wstawiamy dane do tabeli dla 3NF - informacje o departamentach
+INSERT INTO DepartmentsInfo (FBK#DepartmentID, DepartmentName, DepratmentSUID) VALUES
+(1, 'IT', 'KR50050511'),
+(2, 'HR', 'ZT1050502'),
+(3, 'Finance', 'AN33050544');
+
+-- Wstawiamy dane do tabeli dla 3NF - powiązanie pracowników z departamentami
+INSERT INTO EmployeeDepartments (BK#EmployeeID, FBK#DepartmentID) VALUES
+(1, 1),
+(2, 2),
+(3, 3);
+
+-- Wybieramy dane z poziomu 3
+SELECT * FROM Employees3NF;
