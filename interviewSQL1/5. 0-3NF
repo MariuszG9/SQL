@@ -64,6 +64,10 @@ INSERT INTO Departments (EmployeeID, DepartmentName, DepratmentSUID) VALUES
 -- Wybieramy dane z poziomu 2
 SELECT * FROM Employees2NF;
 
+/* WAŻNY KOMENTARZ. Tak na prawdę tabela jest już w trzeciej postaci normalnej. Gdybyśmy w tym przykładzie posiadali na przykład kod pocztowy miejscowości oraz miejscowośc to 
+wtedy należałoby wydzielić kolejną tabelę zawierające dane miejscowości, a usunąć je z tabeli pracowników.*/
+-- ten kod poniżej jest tylko sztuką dla sztuki w kontekście przećwiczenia pewnych elementów dotyczących tabel
+
 -- Tworzymy tabelę dla 3NF - informacje o departamentach
 CREATE TABLE DepartmentsInfo (
     FBKDepartmentID INT PRIMARY KEY,
